@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Script for character info panel at the bottom of the screen, has character info as well as roll data
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 

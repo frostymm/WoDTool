@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/*
+ * Both Tokens and Blocks have this script
+ * It is used to tell when a player attempts to place one piece on top of another, returns position relative to piece rather than ground collider
+ * */
+
+using UnityEngine;
 using System.Collections;
 
 public class PieceObjectScript : MonoBehaviour {

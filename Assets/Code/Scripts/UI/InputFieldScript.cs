@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Simple script to manage data in an input field
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -15,15 +17,5 @@ public class InputFieldScript : MonoBehaviour {
 	public void SetText(string txt)
 	{
 		inputField.text = txt;
-	}
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

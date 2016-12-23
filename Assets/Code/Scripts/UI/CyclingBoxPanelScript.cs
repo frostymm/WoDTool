@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Collection of buttons that cycle between several display values (I.E. /,X,* for damage types)
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 

@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/* Script attached to CharacterToLoadObject prefab. This is the list of characters in the UI when
+ * you go to choose a character that you've already made to place on the board.
+ * */
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 

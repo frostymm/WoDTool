@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Script for handling the actual PC, NPC's dropdown buttons
+
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
@@ -59,10 +61,5 @@ public class CharacterTypeDropDownScript : MonoBehaviour, IPointerEnterHandler, 
 	// Use this for initialization
 	void Start () {
 		characterTypeText.text = GameManager.Instance().selectedCharacter.GetCharacterType().ToString();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

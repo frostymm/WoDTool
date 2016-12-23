@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//A single button within a cycling button panel
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -23,9 +25,4 @@ public class CyclingButtonScript : MonoBehaviour {
 		buttonText.text = buttonTypes[currValue];
 	}
 	public int GetValue(){ return currValue; }
-
-	void Start()
-	{
-
-	}
 }

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Script attached to panel that pops up when you attempt to set an image for a character
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -16,15 +18,5 @@ public class LoadImageFilePanelScript : MonoBehaviour {
 	public void Cancel()
 	{
 		Destroy(gameObject);
-	}
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

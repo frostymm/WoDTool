@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+ * Serializable character data storage class
+ * */
+
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,8 +48,6 @@ public class Character : ICloneable{
 
 	public void SetHashtableValue(System.Object key, System.Object val, bool isCalledFromNetwork)
 	{
-		//Debug.Log("SettingHashTableValue: " + (string)key);
-
 		if(val.GetType() == typeof(Statistic) && isCalledFromNetwork)
 		{
 			Statistic stat = (Statistic)val;
@@ -214,16 +216,7 @@ public class Character : ICloneable{
 		Image,
 		BasicInfo,
 		MainInfo,
-		CharacterType,
-		AttributesIntelligence,
-		AttributesWits,
-		AttributesResolve,
-		AttributesStrength,
-		AttributesDexterity,
-		AttributesStamina,
-		AttributesPresence,
-		AttributesManipulation,
-		AttributesComposure
+		CharacterType
 	}
 
 	public enum StatCategories

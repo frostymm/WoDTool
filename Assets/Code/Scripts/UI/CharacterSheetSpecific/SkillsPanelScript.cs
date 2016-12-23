@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿//Script containing all the data for the skills panel
+//These were handled slightly differently than merits or attributes so they got their own script to accomodate.
+
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;

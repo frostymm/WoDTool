@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Script that initializes character type dropdown buttons (PC, Important NPC, Unimportant NPC)
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -21,14 +23,4 @@ public class CharacterTypeButtonScript : MonoBehaviour {
 	}
 
 	public void SetDropDownScript(CharacterTypeDropDownScript dropDown){ m_DropDownScript = dropDown; }
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

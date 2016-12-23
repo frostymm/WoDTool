@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Simple loop script for loading screen when syncing two clients stage data (., .., ..., .....)
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -20,11 +22,6 @@ public class TextChangeLoopScript : MonoBehaviour {
 			m_CurrentIndex = 0;
 
 		m_Timer = Time.time + interval;
-	}
-
-	// Use this for initialization
-	void Start () {
-	
 	}
 	
 	// Update is called once per frame

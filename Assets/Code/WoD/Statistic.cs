@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/*
+ * A stat class for storing statistic data
+ * I made it so that it could input any type of data and any amount it needed
+ * */
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;

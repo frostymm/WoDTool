@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Script attached to button when selecting from list of saved stages to load
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -13,15 +15,5 @@ public class FileToLoadObjectScript : MonoBehaviour {
 			Debug.Log("Setting Stage To Load: " + fileName.text);
 
 		LevelManager.Instance().SetStageToLoad(fileName.text);
-	}
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

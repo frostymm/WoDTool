@@ -24,14 +24,4 @@ public class StatListRollObjectScript : MonoBehaviour {
 	{
 		RollPanelBoardScript.GetRollPanelBoardScript().RemoveStatObject(m_Key);
 	}
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

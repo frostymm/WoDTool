@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿//Script for the character list panel on the side of the screen during play.
+//Before losing data from last time working on this, it also held a roll initiative button that rolled initiative for all characters present
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 

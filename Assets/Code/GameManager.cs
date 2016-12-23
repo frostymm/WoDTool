@@ -1,5 +1,15 @@
-﻿using UnityEngine;
+﻿/*
+ * Michael Shane McMurdy
+ * Enigmatic Games 2015
+ * 
+ * 
+ * This is the game manager singleton script that's attached to a donotdestroyonload object.
+ * It includes all main game variables as well as how data is saved/loaded and handled
+ * */
+
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -20,7 +30,7 @@ public class GameManager : MonoBehaviour {
 		return m_Instance;
 	}
 
-	private float m_VersionNumber = 0.1f;
+	private float m_VersionNumber = 0.2f;
 	public float GetVersion(){ return m_VersionNumber; }
 	
 	bool m_DebugMode = true;
@@ -30,6 +40,7 @@ public class GameManager : MonoBehaviour {
 		set{ m_DebugMode = value; }
 	}
 
+    //Is this client the dungeon master? Handles whether to display hidden blocks and various character information
 	private bool m_isDM = false;
 	public bool isDM
 	{
@@ -41,24 +52,31 @@ public class GameManager : MonoBehaviour {
 	public bool inBuildMode
 	{
 		get{ return m_inBuildMode; }
-		set{ m_inBuildMode = value; }
+		set
+        {
+            m_inBuildMode = value;
+            if (m_inBuildMode)
+                LevelManager.Instance().EnterBuildMode();
+            else
+                LevelManager.Instance().ExitBuildMode();
+        }
 	}
 
 	public static Vector3 GetBlockScale(){ return new Vector3(GameManager.blockWidth, GameManager.blockHeight, GameManager.blockWidth); }
 	
-	private static float m_BlockWidth = 4; //uniform width of all terrain block objects
+	private static float m_BlockWidth = 4;          //uniform width of all terrain block objects
 	public static float blockWidth
 	{
 		get{ return m_BlockWidth; }
 	}
 
-	private static float m_BlockHeight = 1.0f; // uniform height for all terrain block objects
+	private static float m_BlockHeight = 1.0f;      // uniform height for all terrain block objects
 	public static float blockHeight
 	{
 		get{ return m_BlockHeight; }
 	}
 	
-	public EventSystem GetEventSystem() //Event system associated with UI and BuildingHUD
+	public EventSystem GetEventSystem()             //Event system associated with UI and BuildingHUD
 	{
 		return GameObject.FindObjectOfType<EventSystem>();
 	}
@@ -68,9 +86,10 @@ public class GameManager : MonoBehaviour {
 		PhotonNetwork.offlineMode = true;
 		NetworkManager.Instance().CreateServer("");
 
-		Application.LoadLevel("BuildingMode");
+        SceneManager.LoadScene("BuildingMode");
 	}
 
+    //List of sprites associated with their characters currently loaded into level
 	private Dictionary<string, Sprite> m_LoadedSprites = new Dictionary<string, Sprite>();
 	public void AddLoadedSprite(byte[] imgData)
 	{
@@ -122,7 +141,7 @@ public class GameManager : MonoBehaviour {
 			return Resources.Load<Sprite>("Textures/EnigmaticLogo");
 	}
 
-	private Character m_SelectedCharacter;
+	private Character m_SelectedCharacter;      //Currently Selected character, this is who shows up on your board display at the bottom
 	public Character selectedCharacter
 	{ 
 		get{ return m_SelectedCharacter; } 
@@ -134,11 +153,11 @@ public class GameManager : MonoBehaviour {
 		m_SelectedCharacter = new Character();
 	}
 
-	private Dictionary<string, int> m_LoadedStageCharactersLastID = new Dictionary<string, int>(); //last id used with each character name
+	private Dictionary<string, int> m_LoadedStageCharactersLastID = new Dictionary<string, int>();          //last instance id used with each character name, add +1 when making a new instance of a character
 	public Dictionary<string, int> GetLoadedStageCharactersLastIDs(){ return m_LoadedStageCharactersLastID; }
 	public void SetLoadedStageCharactersLastIDs(Dictionary<string, int> sIDs){ m_LoadedStageCharactersLastID = sIDs; }
 
-	private Dictionary<string, Character> m_LoadedStageCharacters = new Dictionary<string, Character>(); //character instances on stage
+	private Dictionary<string, Character> m_LoadedStageCharacters = new Dictionary<string, Character>();    //character instances on stage
 	public Dictionary<string, Character> GetLoadedStageCharacters(){ return m_LoadedStageCharacters; }
 	public void SetLoadedStageCharacters(Dictionary<string, Character> sChars)
 	{ 
@@ -151,14 +170,13 @@ public class GameManager : MonoBehaviour {
 	{
 		if(c.GetCharacterType() == CharacterTypes.UnimportantNPC)
 		{
-			//Character cCopy = (Character)c.Clone();
 			if(m_LoadedStageCharacters.ContainsKey(c.GetName() + c.GetInstanceID()))
 			{
-				m_LoadedStageCharactersLastID[c.GetName()]++;
-				c.SetInstanceID(m_LoadedStageCharactersLastID[c.GetName()]);
+                GetLoadedStageCharactersLastIDs()[c.GetName()]++;
+				c.SetInstanceID(GetLoadedStageCharactersLastIDs()[c.GetName()]);
 			}
 			else
-				m_LoadedStageCharactersLastID.Add(c.GetName(), 0);
+                GetLoadedStageCharactersLastIDs().Add(c.GetName(), 0);
 
 			m_LoadedStageCharacters.Add(c.GetName() + c.GetInstanceID(), c);
 		}
@@ -169,7 +187,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	private List<Character> m_LoadedCharacterFiles = new List<Character>();
+	private List<Character> m_LoadedCharacterFiles = new List<Character>();                             //Currently Loaded characters associated with local files
 	public List<Character> GetLoadedCharacterFiles() { return m_LoadedCharacterFiles; }
 
 	public void AddLoadedCharacterFile(Character character)
@@ -189,7 +207,7 @@ public class GameManager : MonoBehaviour {
 		m_LoadedCharacterFiles.Clear();
 	}
 
-	public void SaveCharacter()
+	public void SaveCharacter() //Save character to persistent data path appdata/locallow/enigmaticgames
 	{
 		if(!Directory.Exists(Application.persistentDataPath + "/CharacterData/"))
 			Directory.CreateDirectory(Application.persistentDataPath + "/CharacterData/");
@@ -205,20 +223,16 @@ public class GameManager : MonoBehaviour {
 		bf.Serialize(file, data);
 		file.Close();
 
-		AddLoadedCharacterFile(data); // Add character to list if new
+		AddLoadedCharacterFile(data);                   // Add character file to list if new
 		
 		if(GameManager.Instance().isDebugMode)
 			Debug.Log("Saving File to: " + Application.persistentDataPath + "/CharacterData/" + fileName + ".dat");
 	}
 
-	private Character m_CharacterToLoad;
-	public Character characterToLoad{ get{ return m_CharacterToLoad; } set{ m_CharacterToLoad = value; } }
-	public void SelectCharacter()
-	{
-		selectedCharacter = m_CharacterToLoad;
-	}
+	private Character m_CharacterToLoad;                // Chosen character from character placement selection
+	public Character characterToLoad{ get{ return m_CharacterToLoad; } set{ selectedCharacter = m_CharacterToLoad = value; } }
 
-	public Character LoadCharacter(string fileName)
+	public Character LoadCharacter(string fileName)     //Load character from file and add to m_LoadedCharacterFiles list
 	{
 		if(File.Exists(Application.persistentDataPath + "/CharacterData/" + fileName + ".dat"))
 		{
@@ -260,7 +274,7 @@ public class GameManager : MonoBehaviour {
 
 	private float m_CharacterUpdateTimer = 0;
 	private float m_CharacterUpdateInterval = 3.0f;
-	public void SendCharacterUpdates()
+	public void SendCharacterUpdates()               //Send character data changes across network (I.E. damage status updates)
 	{
 		foreach(Character c in GetLoadedStageCharacters().Values)
 		{
@@ -277,6 +291,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+    // Singleton initialization
 	void Awake()
 	{
 		if(m_Instance)
@@ -296,16 +311,12 @@ public class GameManager : MonoBehaviour {
 		if(isDebugMode)
 			Debug.Log("Photon: " + PhotonNetwork.connectionState);
 
-		if(GetLoadedStageCharacters().Count > 0 && m_CharacterUpdateTimer < Time.time)
-		{
-			SendCharacterUpdates();
-			m_CharacterUpdateTimer = Time.time + m_CharacterUpdateInterval;
-		}
+        //Update changes across network
+        if(!PhotonNetwork.offlineMode)
+		    if (GetLoadedStageCharacters().Count > 0 && m_CharacterUpdateTimer < Time.time)
+		    {
+			    SendCharacterUpdates();
+			    m_CharacterUpdateTimer = Time.time + m_CharacterUpdateInterval;
+		    }
 	}
-}
-
-public enum CharacterConnection
-{
-	local,
-	remote
 }

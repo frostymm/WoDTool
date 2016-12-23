@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/*
+ * The ground collider covering the map
+ * This is simply used to figure out where the player is pointing
+ * */
+
+using UnityEngine;
 using System.Collections;
 
 public class GColliderScript : MonoBehaviour {

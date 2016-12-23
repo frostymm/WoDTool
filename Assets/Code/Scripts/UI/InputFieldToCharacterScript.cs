@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Input field populated with character information
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -28,10 +30,5 @@ public class InputFieldToCharacterScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		LoadData();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

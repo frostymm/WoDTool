@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/*
+ * This is the level manager singleton script that's attached to a donotdestroyonload object.
+ * This handles stage data as well as how to handle sending and receiving it over the network
+ * */
+
+using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,10 +13,22 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Linq;
 
 public class LevelManager : MonoBehaviour {
-	
-	Dictionary<Vector3,StagePiece> m_Stage = new Dictionary<Vector3,StagePiece>();
+
+    private static LevelManager m_Instance = null;
+    public static LevelManager Instance()
+    {
+        if (m_Instance == null)
+        {
+            m_Instance = GameObject.FindObjectOfType<LevelManager>();
+        }
+
+        return m_Instance;
+    }
+
+    Dictionary<Vector3,StagePiece> m_Stage = new Dictionary<Vector3,StagePiece>();
 	public Dictionary<Vector3,StagePiece> GetStage(){ return m_Stage; }
 
+    //Seperate dictionary for unity GameObject references because they are not serializable and cannot be included in "StagePiece"
 	Dictionary<Vector3,GameObject> m_StageGameObjects = new Dictionary<Vector3,GameObject>();
 	public Dictionary<Vector3,GameObject> GetStageGameObjects(){ return m_StageGameObjects; }
 
@@ -20,6 +37,7 @@ public class LevelManager : MonoBehaviour {
 		List<StageCharacter> sChars;
 		List<StagePiece> sPieces;
 
+        //Find all characters in stage, exclude hidden characters if Dungeon master
 		if(GameManager.Instance().isDM)
 			sPieces = m_Stage.Values.ToList().FindAll(x => x.m_Type == StagePieceType.character);
 		else
@@ -48,20 +66,9 @@ public class LevelManager : MonoBehaviour {
 		m_Stage.Remove(pos);
 	}
 
-	private static LevelManager m_Instance = null;
-	public static LevelManager Instance()
-	{
-		if (m_Instance == null) 
-		{
-			m_Instance = GameObject.FindObjectOfType<LevelManager>();
-		}
-		
-		return m_Instance;
-	}
-
-	private RaycastHit m_MousePosition; //raycast for position of mouse on screen
+	private RaycastHit m_MousePosition;                             //raycast for position of mouse on screen
 	public RaycastHit GetMouseHit(){ return m_MousePosition; }
-	public Vector3 CalcGridColSelectedPosition()
+	public Vector3 CalcGridColSelectedPosition()                    //Find out which cell the player has highlighted
 	{
 		float x = Mathf.Floor((m_MousePosition.point.x + GameManager.blockWidth/2) / GameManager.blockWidth) * GameManager.blockWidth;
 		float z = Mathf.Floor((m_MousePosition.point.z + GameManager.blockWidth/2) / GameManager.blockWidth) * GameManager.blockWidth;
@@ -80,7 +87,7 @@ public class LevelManager : MonoBehaviour {
 		set{ m_IsPositionSelected = value; }
 	}
 
-	public GameObject m_HighlighterBox; //box to show highlighter (to select blocks)
+	public GameObject m_HighlighterBox;                             //box to show highlighter (to select blocks)
 	public GameObject GetHighlighterBox(){ return m_HighlighterBox; }
 
 	private Vector3 m_SelectedPosition = new Vector3();
@@ -151,26 +158,11 @@ public class LevelManager : MonoBehaviour {
 
 		if(GameManager.Instance().inBuildMode)
 			BuildingManager.Instance().HandleSelectionBox(m_SelectionBox);
-		else
-		{
-			if(isPositionSelected)
-			{
-				if(Input.GetButtonDown("Select"))
-				{
-					//OnSelectButtonPress(selectionBox);
-				}
-				if(Input.GetButtonDown("Deselect"))
-				{
-					//OnDeselectButtonPress(selectionBox);
-				}
-			}
-		}
+
 	}
 
-	public void EnterBuildMode()
-	{
-		//GetHighlighterBox().SetActive(true);
-	}
+    // Where variables are initialized for build mode, currently empty
+	public void EnterBuildMode(){}
 
 	public void ExitBuildMode()
 	{
@@ -211,12 +203,8 @@ public class LevelManager : MonoBehaviour {
 	
 	private string m_StageToLoad = "";
 	public void SetStageToLoad(string fileName){ m_StageToLoad = fileName; }
-	public void LoadStage() // load own stage
+	public void LoadStage() // load  stage on self
 	{
-		/*if(GetStage().Count > 0)
-		{
-			DeleteCurrentStage();
-		}*/
 		StageSaveData stageData = new StageSaveData();
 		if(File.Exists(Application.persistentDataPath + "/StageData/" + m_StageToLoad + ".dat"))
 		{
@@ -226,13 +214,9 @@ public class LevelManager : MonoBehaviour {
 			stageData = (StageSaveData)bf.Deserialize(file);
 			file.Close();
 			
-			//Set SaveData
-			//data.RetrieveVariables();
-			
 			Debug.Log("Data Loaded");
 		}
 
-		//CreateStage();
 		LoadStage(stageData, CharacterConnection.local);
 
 		if(!PhotonNetwork.offlineMode)
@@ -247,6 +231,11 @@ public class LevelManager : MonoBehaviour {
 
 		CreateStage();
 	}
+
+    //When sending and loading stage data, because it is so large, it could not be sent over RPC calls
+    //The alternative was to send the file to a server and then have clients download it from there but at the time I didn't have a means of setting up a permanent server
+    //So instead I broke up the stage data into many parts and sent it all over at fixed intervals as not to overload the RPC stream
+    //I then made sure that when the client received the last of the file, they were able to put it back together and load it like a normal stage file
 
 	public void LoadStage(List<byte[]> parts)
 	{
@@ -344,6 +333,7 @@ public class LevelManager : MonoBehaviour {
 		Debug.Log("DataLength: " + data.Count);
 	}
 
+    //Singleton Initialization
 	void Awake()
 	{
 		if(m_Instance)
@@ -352,10 +342,6 @@ public class LevelManager : MonoBehaviour {
 		{
 			DontDestroyOnLoad(this);
 		}
-	}
-
-	// Use this for initialization
-	void Start () {
 	}
 	
 	// Update is called once per frame
@@ -376,6 +362,10 @@ public class LevelManager : MonoBehaviour {
 [Serializable]
 public class StageSaveData
 {
+    /*
+     * This class contains all the stage save data including types of pieces, character portraits as well as how to load and store data in it
+     * */
+
 	public StagePiece[] stagePieces;
 	public Dictionary<string, byte[]> m_Images = new Dictionary<string, byte[]>();
 

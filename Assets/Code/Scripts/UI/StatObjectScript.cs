@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Script for stat objects that display and allow input for character information
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,8 +18,6 @@ public class StatObjectScript : MonoBehaviour {
 
 	public void LoadFromStatistic()
 	{
-		//Debug.Log("Load from Statistic");
-
 		if(m_Statistic != null)
 		{
 			bool contains = false;
@@ -57,8 +57,6 @@ public class StatObjectScript : MonoBehaviour {
 
 	public void SaveToCharacterTable()
 	{
-		//Debug.Log("Saving Character Data");
-
 		if(StatCategoryAndName.Length > 0)
 		{
 			PopulateStatisticData();
@@ -122,11 +120,5 @@ public class StatObjectScript : MonoBehaviour {
 	{
 		if(GameManager.Instance().selectedCharacter != m_CharacterReference || HasStatValueChanged())
 			Start();
-	}
-
-
-	// Update is called once per frame
-	void Update () {
-
 	}
 }

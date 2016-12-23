@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+ * Class containing definitions for serializing and deserializing my own types for use with Photon
+ * */
+
+using UnityEngine;
 using System.Collections;
 using System.IO;
 using ExitGames.Client.Photon;
@@ -13,7 +17,6 @@ public static class PhotonCustomSerialize{
 		PhotonPeer.RegisterType(typeof(Character), (byte)'C', SerializeObject, DeserializeObject);
 		PhotonPeer.RegisterType(typeof(Statistic), (byte)'T', SerializeObject, DeserializeObject);
 		PhotonPeer.RegisterType(typeof(byte[]), (byte)'B', SerializeObject, DeserializeObject);
-		//PhotonPeer.RegisterType(typeof(object), (byte)'O', SerializeObject, DeserializeObject);
 	}
 
 	public static byte[] SerializeObject(object customObject)

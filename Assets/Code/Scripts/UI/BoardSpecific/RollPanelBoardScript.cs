@@ -1,4 +1,5 @@
 ﻿//Script to manage the roll panel on the board HUD
+//Before data loss, this included a roll builder that allowed you to add up several stats and a modifier and combine them into a single roll
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,6 +31,7 @@ public class RollPanelBoardScript : MonoBehaviour {
 
 	public void SavedRollsOnEnter()
 	{
+        Debug.Log("fak");
 	}
 
 	public void SaveRollOnClick()

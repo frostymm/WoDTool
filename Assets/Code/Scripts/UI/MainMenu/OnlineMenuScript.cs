@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿//Script for handling lobby and room panels
+//Lobby contains list of all rooms as well as room creation
+//Room contains player list, ready information and start button
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -116,7 +120,6 @@ public class OnlineMenuScript : MonoBehaviour {
 	public void StartGame()
 	{
 		NetworkManager.Instance().NMPhotonView.RPC("StartGame", PhotonTargets.All);
-		//NetworkManager.Instance().StartGame();
 	}
 
 	// Use this for initialization

@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿//Bubble field
+//Allows for disabling first bubble for attributes and handles selecting multiple bubbles at once
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +25,6 @@ public class BubbleFieldScript : MonoBehaviour {
 
 	public void SetValue(int val)
 	{
-		//Debug.Log("Set Value bubblefield");
 		int index = val;
 
 		for(int i = bubbles.Count -1; i >= 0; i--)
@@ -110,11 +112,5 @@ public class BubbleFieldScript : MonoBehaviour {
 	{
 		if(Application.isEditor)
 			CheckBubbleButtonsInEditor();
-	}
-	
-	
-	// Update is called once per frame
-	void Update () {
-
 	}
 }

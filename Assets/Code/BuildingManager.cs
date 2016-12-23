@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/*
+ * This is the building manager singleton script that's attached to a donotdestroyonload object.
+ * 
+ * */
+
+using UnityEngine;
 using System.Collections;
 using System;
 using System.IO;
@@ -88,6 +93,7 @@ public class BuildingManager : MonoBehaviour {
 		deleteMode
 	}
 
+    //Change and Set the elevation of the ground collider from which you can place blocks
 	public void ChangeElevation(int i)
 	{
 		Vector3 pos = m_GridCollider.transform.position;
@@ -176,12 +182,7 @@ public class BuildingManager : MonoBehaviour {
 			if(LevelManager.Instance().GetStage().ContainsKey(pos))
 			{
 				StagePiece sp = LevelManager.Instance().GetStage()[pos];
-				if(sp.m_Type == StagePieceType.character)
-				{
-					//StageCharacter sb = sp as StageCharacter;
-
-				}
-				else
+				if(sp.m_Type != StagePieceType.character)
 				{
 					sp.DestroyGameObject();
 
@@ -210,6 +211,7 @@ public class BuildingManager : MonoBehaviour {
 		LevelManager.Instance().GetStageGameObjects().Add(newPos, go);
 	}
 
+    //This is for when placing a coin object, it temporarily replaces the selection box
 	private GameObject m_TransparentCoin;
 	public void EnableTransparentCoin()
 	{
@@ -264,7 +266,7 @@ public class BuildingManager : MonoBehaviour {
 	}
 	
 	public StagePieceType m_PiecePlacingType = StagePieceType.block;
-	public Collider m_GridCollider; //plane in which we can view and click on currently
+	public Collider m_GridCollider;                                     //plane in which we can view and click on currently
 	public void HandleSelectionBox(GameObject selectionBox)
 	{
 		if(LevelManager.Instance().isPositionSelected)
@@ -280,6 +282,7 @@ public class BuildingManager : MonoBehaviour {
 		}
 	}
 
+    //Singleton initialization
 	void Awake()
 	{
 		if(m_Instance)
@@ -417,6 +420,12 @@ public class StageBlock : StagePiece
 [Serializable]
 public class StagePiece
 {
+    /*
+     * Base class for stagePieces
+     * Only contains most basic piece information that all pieces need
+     * Does not contain gameObject reference because then it would not be serializable 
+     * */
+
 	public StagePieceType m_Type;
 
 	public float m_PosX;

@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/*
+ * Script attached to character tokens
+ * used to determine when a player attempts to move a token
+ * */
+
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
@@ -45,7 +50,6 @@ public class CoinObjectScript : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 		Debug.Log("End Drag");
 		gameObject.transform.parent = null;
 
-		//BuildingManager.Instance().MovePiece(m_BeginDragPos, LevelManager.Instance().GetSelectedPosition());
 		NetworkManager.Instance().NMPhotonView.RPC("MovePiece", PhotonTargets.All, 
 		                                           m_BeginDragPos, LevelManager.Instance().GetSelectedPosition());
 

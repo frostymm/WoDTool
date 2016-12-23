@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Room creation panel script
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 

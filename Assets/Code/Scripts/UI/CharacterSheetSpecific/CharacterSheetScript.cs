@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/*
+ * This script is for the entire character sheet UI object
+ * it handles all character data input and portrait importing
+ * */
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.IO;
@@ -35,12 +40,6 @@ public class CharacterSheetScript : MonoBehaviour {
 
 			byte[] fileData;
 			fileData = File.ReadAllBytes(imgPath);
-
-			/*Debug.Log("FileSize: " + fileData.Length);
-			byte[] compressed = CLZF2.Compress(fileData);
-			Debug.Log("Filesize Compressed: " + compressed.Length);
-			byte[] decompressed = CLZF2.Decompress(compressed);
-			Debug.Log("Filesize Decompressed: " + decompressed.Length);*/
 
 			//Reduce image size
 			Debug.Log("FileSize: " + fileData.Length);
@@ -113,9 +112,5 @@ public class CharacterSheetScript : MonoBehaviour {
 	void Start () {
 		m_TempCharacter = GameManager.Instance().selectedCharacter;
 		SetPortrait();
-	}
-
-	void FixedUpdate () {
-		
 	}
 }

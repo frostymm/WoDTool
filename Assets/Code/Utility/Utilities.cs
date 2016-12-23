@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+ * Class for various utilities that I felt did not belong in other classes
+ * */
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -35,6 +39,7 @@ public static class Utilities {
 		return fullArray;
 	}
 
+    //Combines array of strings that makes up keys for character data (I.E. Attributes + Composure, Skills + Athletics, etc)
 	public static string GetKeyFromStringArray(string[] array)
 	{
 		string key = "";
@@ -45,6 +50,7 @@ public static class Utilities {
 		return key;
 	}
 
+    //Turns stagepieces visible/invisible. Includes UI components like the images on character tokens
 	public static void SetRenderersForGameObject(GameObject go, bool hidden)
 	{
 		Renderer[] comps = go.GetComponentsInChildren<Renderer>();
@@ -76,8 +82,10 @@ public static class Utilities {
 		return result;
 	}
 
+    //Utilities specifically concerning User Interface
 	public static class UI
 	{
+        //This scales the size of a UI rectangle depending on the contents which I of course used before I discovered that Unity has a component that already handles that for you #dummyhead
 		public static void UpdateContentBoxSize(GameObject contentBox, int objectCount, float objectScale)
 		{
 			RectTransform rt = contentBox.GetComponent<RectTransform>();

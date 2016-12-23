@@ -1,5 +1,7 @@
 ﻿//Roll object
 //Consists of all data needed to roll dice
+//Unfortunately the implementation for this can only currently be seen in the last build 06-30-2015 because the UI code was somehow lost
+//This may be fixed in the future but for the time being you can simply state the number of dice you want to roll
 
 using UnityEngine;
 using System;

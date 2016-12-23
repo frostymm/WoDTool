@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Script attached to panel that displays when saving or loading stage data
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;

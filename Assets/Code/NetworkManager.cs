@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/*
+ * This is the network manager singleton script that's attached to a donotdestroyonload object.
+ * It is used to handle all Photon network function calls 
+ * */
+
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -27,22 +33,23 @@ public class NetworkManager : MonoBehaviour {
 		set{ m_PhotonView = value; }
 	}
 
+    //Setup for default network room properties. Nothing important is stored within yet.
 	private property[] m_DefaultProperties = new property[2]
 	{ new property("Poop", "Poop"), new property("Pooping", true) };
 
 	public void CreateServer(string name)
 	{
-		LeaveRoom(); //Leave room if in room
+		LeaveRoom(); //Leave current room check
 		
-		RoomOptions roomOptions = new RoomOptions(){ //maxPlayers = 2, cleanupCacheOnLeave = true, 
-			customRoomProperties = CreateHashtable(m_DefaultProperties) };
+		RoomOptions roomOptions = new RoomOptions(){ 
+			CustomRoomProperties = CreateHashtable(m_DefaultProperties) };
 
 		if(name != "")
 			PhotonNetwork.CreateRoom(name, roomOptions, TypedLobby.Default);
 		else
 		{
-			if(GetMyPlayer().name != "")
-				PhotonNetwork.CreateRoom(GetMyPlayer().name + "'s room", roomOptions, TypedLobby.Default);
+			if(GetMyPlayer().NickName != "")
+				PhotonNetwork.CreateRoom(GetMyPlayer().NickName + "'s room", roomOptions, TypedLobby.Default);
 			else
 				PhotonNetwork.CreateRoom(null, roomOptions, TypedLobby.Default);
 		}
@@ -53,7 +60,7 @@ public class NetworkManager : MonoBehaviour {
 	
 	public void JoinRoom(RoomInfo room)
 	{
-		PhotonNetwork.JoinRoom(room.name);
+		PhotonNetwork.JoinRoom(room.Name);
 		//SetStatus("InRoom");
 	}
 	
@@ -86,14 +93,8 @@ public class NetworkManager : MonoBehaviour {
 	{
 		return PhotonNetwork.player;
 	}
-
-	public void ResetPlayerCustomProperties()
-	{
-		//Player
-		SetMyPlayerCustomProperty("isDM", false);
-		GameManager.Instance().isDM = false;
-	}
 	
+    //Room Custom Properties
 	public void ResetRoomCustomProperties()
 	{
 		SetMyRoomCustomProperty("RaceFinished", false);
@@ -106,17 +107,24 @@ public class NetworkManager : MonoBehaviour {
 	
 	public object GetMyRoomCustomProperty(string name)
 	{
-		return PhotonNetwork.room.customProperties[name];
+		return PhotonNetwork.room.CustomProperties[name];
 	}
 
-	public void SetMyPlayerCustomProperty(string name, object val)
+    //Player Custom Properties
+    public void ResetPlayerCustomProperties()
+    {
+        SetMyPlayerCustomProperty("isDM", false);
+        GameManager.Instance().isDM = false;
+    }
+
+    public void SetMyPlayerCustomProperty(string name, object val)
 	{
 		GetMyPlayer().SetCustomProperties(CreateHashtable(name, val));
 	}
 	
 	public object GetMyPlayerCustomProperty(string name)
 	{
-		return GetMyPlayer().customProperties[name];
+		return GetMyPlayer().CustomProperties[name];
 	}
 
 	public Room GetCurrentRoom()
@@ -129,7 +137,6 @@ public class NetworkManager : MonoBehaviour {
 		if(!PhotonNetwork.connected)
 		{
 			PhotonNetwork.ConnectUsingSettings(GameManager.Instance().GetVersion().ToString());
-			//GameManager.Instance().IsOnline = true;
 			ResetPlayerCustomProperties();
 		}
 	}
@@ -138,8 +145,6 @@ public class NetworkManager : MonoBehaviour {
 	{
 		if(PhotonNetwork.connected)
 			PhotonNetwork.Disconnect();
-		
-		//GameManager.Instance().IsOnline = false;
 	}
 
 	public ExitGames.Client.Photon.Hashtable CreateHashtable(string name, object val)
@@ -159,7 +164,8 @@ public class NetworkManager : MonoBehaviour {
 		return ht;
 	}
 
-	void Awake()
+    // Singleton initialization
+    void Awake()
 	{
 		if(m_Instance)
 			DestroyImmediate(gameObject);
@@ -188,7 +194,7 @@ public class NetworkManager : MonoBehaviour {
 	{
 		Debug.Log("Game Started Via Network");
 		
-		Application.LoadLevel("BuildingMode");
+		SceneManager.LoadScene("BuildingMode");
 	}
 
 	[PunRPC]
@@ -235,4 +241,10 @@ public class NetworkManager : MonoBehaviour {
 		object obj = PhotonCustomSerialize.DeserializeObject(value);
 		GameManager.Instance().GetLoadedStageCharacter(characterKey).SetHashtableValue(statKey, obj, true);
 	}
+}
+
+public enum CharacterConnection
+{
+    local,
+    remote
 }

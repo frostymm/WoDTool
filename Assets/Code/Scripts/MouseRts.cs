@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+ * Free Real time strategy camera movement code I found.
+ * */
+
+using UnityEngine;
 
 public class MouseRts : MonoBehaviour
 {

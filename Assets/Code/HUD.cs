@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/*
+ * This is the script attached to the HUD object when the game starts
+ * It's really only used to switch between the board and building game modes
+ * */
+
+using UnityEngine;
 using System.Collections;
 
 public class HUD : MonoBehaviour {
@@ -24,7 +29,6 @@ public class HUD : MonoBehaviour {
 				buildingHUD.SetActive(true);
 
 			GameManager.Instance().inBuildMode = true;
-			LevelManager.Instance().EnterBuildMode();
 		}
 		else if(hudType == "board")
 		{
@@ -34,7 +38,6 @@ public class HUD : MonoBehaviour {
 				boardHUD.SetActive(true);
 
 			GameManager.Instance().inBuildMode = false;
-			LevelManager.Instance().ExitBuildMode();
 		}
 	}
 

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Script attached to button displaying stage piece to place down
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -20,15 +22,5 @@ public class PieceButtonScript : MonoBehaviour {
 		BuildingManager.Instance().currentSelectedType = (StageBlockType)blockType;
 		BuildingManager.Instance().SetBuildingMode(BuildingManager.BuildingMode.placeMode);
 		BuildingManager.Instance().m_PiecePlacingType = (StagePieceType)pieceType;
-	}
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Basic HUD navigation script for the main menu
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 

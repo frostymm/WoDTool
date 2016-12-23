@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/*
+ * Script for handling HUD when in building mode
+ * */
+
+using UnityEngine;
 using System.Collections;
 
 public class BuildingHUD : MonoBehaviour {
@@ -65,15 +69,5 @@ public class BuildingHUD : MonoBehaviour {
 	public void ChangeBuildingElevation(int i)
 	{
 		BuildingManager.Instance().ChangeElevation(i);
-	}
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

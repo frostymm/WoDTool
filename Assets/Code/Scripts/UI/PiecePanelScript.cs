@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//This is the script that runs the entire panel with the list of pieces, characters and props you can place.
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -88,7 +90,6 @@ public class PiecePanelScript : MonoBehaviour {
 			if(SelectedCharacterFileIndex == characterFiles.IndexOf(go)) //click on currently selected character
 			{
 				GameManager.Instance().characterToLoad = go.GetComponent<CharacterToLoadObjectScript>().GetCharacter();
-				GameManager.Instance().SelectCharacter();
 				OpenCharacterCreateScreen();
 			}
 			else
@@ -114,7 +115,6 @@ public class PiecePanelScript : MonoBehaviour {
 				b.colors = cb;
 
 				GameManager.Instance().characterToLoad = characterFiles[SelectedCharacterFileIndex].GetComponent<CharacterToLoadObjectScript>().GetCharacter();
-				GameManager.Instance().SelectCharacter();
 			}
 		}
 	}

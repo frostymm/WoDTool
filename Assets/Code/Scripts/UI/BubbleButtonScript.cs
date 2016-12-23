@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Bubbles within a bubblefield
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -33,15 +35,5 @@ public class BubbleButtonScript : MonoBehaviour {
 		bubbleButton.colors = cb;
 		
 		buttonActive = false;
-	}
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

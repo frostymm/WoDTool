@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//script for UI panel that contains both the merits and the flaws
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 

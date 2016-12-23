@@ -1,3 +1,6 @@
+//Script for objects within the board character list
+//Functions as a button to select said character
+
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
