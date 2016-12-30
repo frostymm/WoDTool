@@ -111,10 +111,13 @@
     <Compile Include="Assets\Code\Scripts\UI\BoardSpecific\StatListRollObjectScript.cs" />
     <Compile Include="Assets\Code\Scripts\UI\BubbleButtonScript.cs" />
     <Compile Include="Assets\Code\Scripts\UI\BubbleFieldScript.cs" />
+    <Compile Include="Assets\Code\Scripts\UI\CharacterSheetSpecific\AddMeritDropDownScript.cs" />
     <Compile Include="Assets\Code\Scripts\UI\CharacterSheetSpecific\CharacterSheetScript.cs" />
     <Compile Include="Assets\Code\Scripts\UI\CharacterSheetSpecific\CharacterTypeButtonScript.cs" />
     <Compile Include="Assets\Code\Scripts\UI\CharacterSheetSpecific\CharacterTypeDropDownScript.cs" />
+    <Compile Include="Assets\Code\Scripts\UI\CharacterSheetSpecific\DescriptionPanelScript.cs" />
     <Compile Include="Assets\Code\Scripts\UI\CharacterSheetSpecific\FlawsnMeritsPanelScript.cs" />
+    <Compile Include="Assets\Code\Scripts\UI\CharacterSheetSpecific\MeritButtonScript.cs" />
     <Compile Include="Assets\Code\Scripts\UI\CharacterSheetSpecific\SkillsPanelScript.cs" />
     <Compile Include="Assets\Code\Scripts\UI\CharacterToLoadObjectScript.cs" />
     <Compile Include="Assets\Code\Scripts\UI\CyclingBoxPanelScript.cs" />

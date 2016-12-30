@@ -9,8 +9,9 @@ public class BubbleButtonScript : MonoBehaviour {
 	public Button bubbleButton;
 	public BubbleFieldScript bubbleField;
 
-	public bool buttonDisabled = false;
-	public bool buttonActive = false;
+	public bool buttonDisabled = false;             //interactable
+	public bool buttonActive = false;               //Colored black/Turned on
+    public bool buttonFrozenAppearance = false;     //This was added to support the merit dropdown displays which don't actually change appearance once populated
 	public void ButtonClick()
 	{
 		if(!buttonDisabled)
@@ -19,20 +20,36 @@ public class BubbleButtonScript : MonoBehaviour {
 		}
 	}
 
+    public void TurnButtonBlack()
+    {
+        if (buttonFrozenAppearance)
+            return;
+
+        ColorBlock cb = bubbleButton.colors;
+        cb.normalColor = Color.black;
+        bubbleButton.colors = cb;
+    }
+
 	public void SetButtonTrue()
 	{
-		ColorBlock cb = bubbleButton.colors;
-		cb.normalColor = Color.black; 
-		bubbleButton.colors = cb;
+        TurnButtonBlack();
 		
 		buttonActive = true;
 	}
 
+    public void TurnButtonGray()
+    {
+        if (buttonFrozenAppearance)
+            return;
+
+        ColorBlock cb = bubbleButton.colors;
+        cb.normalColor = Color.gray;
+        bubbleButton.colors = cb;
+    }
+
 	public void SetButtonFalse()
 	{
-		ColorBlock cb = bubbleButton.colors;
-		cb.normalColor = Color.gray; 
-		bubbleButton.colors = cb;
+        TurnButtonGray();
 		
 		buttonActive = false;
 	}

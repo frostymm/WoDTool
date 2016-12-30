@@ -16,12 +16,12 @@ public class BubbleFieldScript : MonoBehaviour {
 	public int numOfBubbles;
 	public List<BubbleButtonScript> bubbles = new List<BubbleButtonScript>();
 	public bool firstBubbleDisabled = false;
+    public bool isAttachedToMerit = false; //Merits work slightly differently than other stat objects using this script
 	
 	public float bubblesXCoordConstant = 0;
 
 	private int m_Value = 0;
 	public int GetValue() { return m_Value; }
-
 
 	public void SetValue(int val)
 	{
@@ -51,7 +51,7 @@ public class BubbleFieldScript : MonoBehaviour {
 			increasingValue = true;
 		}
 
-		if(increasingValue)
+		if(increasingValue || isAttachedToMerit)
 			SetValue(bubbles.IndexOf(button) + 1);
 		else
 			SetValue(bubbles.IndexOf(button));
@@ -59,6 +59,43 @@ public class BubbleFieldScript : MonoBehaviour {
 		if(statObject)
 			statObject.SaveToCharacterTable();
 	}
+
+    public void DisableBubbles(int[] buttons)
+    {
+        foreach(int i in buttons)
+        {
+            bubbles[i].buttonActive = false;
+            bubbles[i].buttonDisabled = true;
+        }
+    }
+
+    public void EnableBubbles(int[] buttons)
+    {
+        foreach (int i in buttons)
+        {
+            bubbles[i].buttonActive = true;
+            bubbles[i].buttonDisabled = false;
+        }
+    }
+
+    public void TurnButtonsBlackAndFreeze(int[] buttons)
+    {
+        foreach(BubbleButtonScript BBS in bubbles)
+        {
+            BBS.buttonFrozenAppearance = false;
+            BBS.TurnButtonGray();
+        }
+
+        foreach(int i in buttons)
+        {
+            bubbles[i].TurnButtonBlack();
+        }
+
+        foreach (BubbleButtonScript BBS in bubbles)
+        {
+            BBS.buttonFrozenAppearance = true;
+        }
+    }
 
 	private void ResetBubbleButtons()
 	{
